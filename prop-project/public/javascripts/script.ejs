@@ -7,28 +7,26 @@
   modifyurl = function(url,param, value) {
     if(url === '/' ){
       url = url+'search';
-   //console.log(url);
+
     }
 
     var val = new RegExp('(\\?|\\&)' + param + '=.*?(?=(&|$))'),
     qstring = /\?.+$/;
 
-// Check if the parameter exists
+
     if (val.test(url))
     {
-      // if it does, replace it, using the captured group
-      // to determine & or ? at the beginning
+
       return url.replace(val, '$1' + param + '=' + value);
     }
     else if (qstring.test(url))
     {
-      // otherwise, if there is a query string at all
-      // add the param to the end of it
+
       return url + '&' + param + '=' + value;
     }
     else
     {
-      // if there's no query string, add one
+
       return url + '?' + param + '=' + value;
     }
   }

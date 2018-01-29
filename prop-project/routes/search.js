@@ -55,7 +55,6 @@ router.get('/', function(req, res, next) {
   "paging":{"start":0,"rows":20}};
   var url3 = '&includeNearbyResults=false&includeSponsoredResults=false&sourceDomain=Makaan';
 
-  //filtering here
 
   var listingType = req.param('listingType');
   if(listingType!=undefined) {
