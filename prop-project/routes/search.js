@@ -67,6 +67,7 @@ router.get('/', function(req, res, next) {
     }
   }
 
+
   var category = '';
   for (var i in url2.filters.and) {
     if (url2.filters.and[i].hasOwnProperty('equal')) {
@@ -100,6 +101,10 @@ router.get('/', function(req, res, next) {
     sortProp(url2,sorted);
   }
 
+  var page_number = req.param('page_number');
+  if(page_number!==undefined) {
+    url2.paging = {"start" : parseInt(page_number)*20 + 20, "rows" : 20};
+  }
 
   var request = new XMLHttpRequest();
   var requestURL = 'https://'+url1+JSON.stringify(url2)+url3;
