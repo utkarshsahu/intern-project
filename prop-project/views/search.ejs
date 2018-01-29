@@ -52,7 +52,7 @@
     <div style="padding-bottom:20px"></div>
     <% for(var i in allList) { %>
 
-      <div class="card">
+      <div class="card" onclick='location.href = "https://www.makaan.com/<%= allList[i].listing.resaleURL %>";'>
         <div class = "property-image"><img src=<%=allList[i].listing.mainImageURL%> alt=<%=allList[i].listing.mainImage.altText%> style="width:100%"> </div>
         <div class="property-content">
           <h3 class = property-title> <b><%=allList[i].listing.property.bedrooms + " BHK "  + allList[i].listing.property.unitType%></b>  </h4>
