@@ -10,10 +10,9 @@
 
     }
 
-    var val = new RegExp('(\\?|\\&)' + param + '=.*?(?=(&|$))'),
+    var val = new RegExp('(\\?|\\&)' + param + '=.*?(?=(&|$))' ),
     qstring = /\?.+$/;
-
-
+//    var bedval = new RegExp('(\\?|\\&)' + 'bed' + '')
     if (val.test(url))
     {
 
@@ -43,6 +42,7 @@
     }
   }
   convDate = function(d) {
+    if(d===undefined) {return ''};
     d = new Date(d);
     var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -50,11 +50,120 @@
   }
 
   buyOrRentMode = function(str) {
-    if(str==="Primary" || str=="Resale") {
-      return "Buy";
+    if(str==="Buy") {
+      return 'sale';
     }
-    else if(str=="Rental") {
-      return "Rent";
+    else if(str=="Rent") {
+      return 'rent';
+    }
+  }
+
+  valPassStatus = function(list, categ) {
+    if(category == 'Buy') {
+      let num = list.constructionStatusId;
+      if(num==1) {
+        return 'Under Construction';
+      }
+      else if(num==2) {
+        return 'Ready to Move';
+      }
+      else {
+        return 'Unknown';
+      }
+    }
+    else {
+      return list.furnished;
+    }
+  }
+
+  //var keypoint_arr = [];
+  funcKeys = function(list) {
+    let keypoints = [];
+    let len = 0;
+    if(list.property.project.possessionDate !== undefined) {
+      keypoints.push('Possession by ' + convDate(list.property.project.possessionDate));
+      len++;
+    }
+    if(list.property.bathrooms !== undefined) {
+      keypoints.push(list.property.bathrooms + ' Bathrooms');
+      len++;
+    }
+    if(list.floor !== undefined && list.totalFloors !== undefined) {
+      let suffix = '';
+      switch (list.floor) {
+        case 1:
+        case 11:
+        case 21:
+        case 31:
+          suffix = 'st';
+          break;
+        case 2:
+        case 12:
+        case 22:
+        case 32:
+          suffix = 'nd';
+          break;
+        case 3:
+        case 13:
+        case 23:
+        case 33:
+          suffix = 'rd';
+          break;
+        default:
+          suffix = 'th';
+      }
+      keypoints.push(list.floor + suffix + ' of ' + list.totalFloors + ' floors');
+      len++;
+    }
+    if(len<3 && list.listingCategory!==undefined) {
+      if(list.listingCategory==='Primary') {
+        keypoints.push('New');
+      }
+      else if(list.listingCategory==='Resale') {
+        keypoints.push('Resale');
+      }
+      else keypoints.push(list.listingCategory);
+
+      len++;
+    }
+    if(len<3 && list.property.bathrooms!==undefined) {
+      keypoints.push(list.property.bathrooms +' Bathrooms');
+      len++;
+    }
+    if(len<3 && list.property.project.isHotProject) {
+      keypoints.push('Hot Project');
+      len++;
+    }
+    return keypoints;
+  }
+
+  modifystat = function(obj) {
+    if(obj["listingSellerTransactionStatuses"]===undefined) {
+      return '';
+    }
+    str = obj.listingSellerTransactionStatuses[0].toLowerCase();
+    return str.replace(/_/g, ' ');
+  }
+
+  controlPrec = function(num) {
+    return Number(num).toFixed(1);
+  }
+
+  handleReviews = function(num) {
+    if(num==undefined) {
+      return '';
+    }
+    else {
+      return (num+' Reviews');
+    }
+  }
+
+  labelPass = function(categ) {
+    if(categ=='Buy') {
+      return 'Construction Status';
+    }
+    else {
+      return 'Furnishing';
     }
   }
 %>

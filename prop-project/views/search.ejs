@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+    <title>Property for Sale in Gurgaon | <%=count %> properties</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!--  <script type="text/javascript" src="/javascripts/script.js"></script> -->
@@ -18,8 +18,8 @@
           <span><%= category %></span>
           <i class="material-icons" style="font-size:24px">expand_more</i>
           <div class="navbar-item-content">
-            <span><a href="./search/?listingType=Buy">Buy</a></span>
-            <span><a href="./search/?listingType=Rent">Rent</a></span>
+            <span><a href="/search?listingType=Buy">Buy</a></span>
+            <span><a href="/search/?listingType=Rent">Rent</a></span>
           </div>
         </div>
 
@@ -44,18 +44,26 @@
             <span><a href=<%=modifyurl(page,'sort','popularity') %> > Popularity</a></span>
           </div>
         </div>
+
+        <div class="navbar-item">
+          <span><a href="/search" style="text-decoration:none; color:inherit;">Reset</a></span>
+        </div>
+
       </div>
       <div class="pull-right">
-
+        <div class="navbar-item">
+          <span><a href="/" style="text-decoration:none; color: inherit;">Home</a></span>
+        </div>
       </div>
     </div>
     <div style="padding-bottom:20px"></div>
+    <span style="position:absolute; top:7.5%;"><%=count + ' properties in total'%></span>
     <% for(var i in allList) { %>
 
       <div class="card" onclick='location.href = "https://www.makaan.com/<%= allList[i].listing.resaleURL %>";'>
         <div class = "property-image"><img src=<%=allList[i].listing.mainImageURL%> alt=<%=allList[i].listing.mainImage.altText%> style="width:100%"> </div>
         <div class="property-content">
-          <h3 class = property-title> <b><%=allList[i].listing.property.bedrooms + " BHK "  + allList[i].listing.property.unitType%></b>  </h4>
+          <h3 class = property-title> <b><%=allList[i].listing.property.bedrooms + " BHK "  + allList[i].listing.property.unitType + ' by ' + allList[i].listing.property.project.builder.name%></b>  </h4>
           <p><%=allList[i].listing.property.project.locality.label%>, <%=allList[i].listing.property.project.locality.suburb.city.label%></p>
         </div>
         <div class="listing-highlights">
@@ -82,16 +90,19 @@
         </div>
         <div class="listing-details">
           <span class="listing-details-data"><strong>Possession by <%= convDate(allList[i].listing.property.project.possessionDate) %></strong></span>
+          <span class="listing-details-data"><strong><%= allList[i].listing.property.bathrooms + ' Bathrooms'%>
         </div>
       </div>
     <% } %>
     <center>
-    <span><a href=<%=modifyurl(page,'page_number', 0) %> >1</a></span>
-    <span><a href=<%=modifyurl(page,'page_number', 1) %> >2</a></span>
-    <span><a href=<%=modifyurl(page,'page_number', 2) %> >3</a></span>
-    <span><a href=<%=modifyurl(page,'page_number', 3) %> >4</a></span>
-    <span><a href=<%=modifyurl(page,'page_number', 4) %> >5</a></span>
-  </center>
+    <span><a href=<%=modifyurl(page,'page_number', currentPage-1) %> > back </a></span>
+    <span><a href=<%=modifyurl(page,'page_number', currentPage) %> ><%=currentPage%></a></span>
+    <span><a href=<%=modifyurl(page,'page_number', currentPage+1) %> ><%=currentPage+1%></a></span>
+    <span><a href=<%=modifyurl(page,'page_number', currentPage+2) %> ><%=currentPage+2%></a></span>
+    <span><a href=<%=modifyurl(page,'page_number', currentPage+3) %> ><%=currentPage+3%></a></span>
+    <span><a href=<%=modifyurl(page,'page_number', currentPage+4) %> ><%=currentPage+4%></a></span>
+    <span><a href=<%=modifyurl(page,'page_number', currentPage+1) %> > forward </a></span>
+    </center>
   </body>
 </html>
 

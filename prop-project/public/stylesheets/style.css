@@ -166,7 +166,7 @@ sup.rupee {
 .card {
    position: relative;
    display: block;
-   width: calc(100% - 130px);
+   width: 80%;
    height: 247px;
    padding: 15px;
    margin: 20px 40px 40px;

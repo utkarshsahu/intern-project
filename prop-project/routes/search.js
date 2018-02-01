@@ -30,6 +30,8 @@ function sortProp(url2,sort){
   }
 }
 
+var cityIdMap = {'Gurgaon': 11, 'Hyderabad' : 12, 'Indore' : 13, 'Kolkata' : 16, 'Mumbai' : 18,
+                'Noida' : 20, 'Pune' : 21, 'Chandigarh' : 24, 'Nagpur' : 25};
 /* GET home page. */
 router.get('/', function(req, res, next) {
   //URL definitions
@@ -94,7 +96,7 @@ router.get('/', function(req, res, next) {
   }
 
   var sorted= req.param('sort');
-  if(sorted !==undefined){
+  if(sorted !== undefined){
     if(url2.sort == undefined){
       url2.sort=[{"field":"price","sortOrder":"DESC"}]
     }
@@ -102,17 +104,24 @@ router.get('/', function(req, res, next) {
   }
 
   var page_number = req.param('page_number');
-  if(page_number!==undefined) {
+  if(page_number !== undefined) {
     url2.paging = {"start" : parseInt(page_number)*20 + 20, "rows" : 20};
   }
+  if(page_number==-1) page_number = 0;
 
+
+  var city = req.param('city');
+  if(city!==undefined) {
+    url2.filters.and[0].equal.cityId = cityIdMap[city];
+  }
   var request = new XMLHttpRequest();
   var requestURL = 'https://'+url1+JSON.stringify(url2)+url3;
   request.onreadystatechange = function() {
 	   if (this.readyState === 4) {
        var resp = JSON.parse(this.responseText);
-       res.render('search', { 'title': 'Express', 'allList': resp.data[0].facetedResponse.items,
-                  'category' : category || 'Select' , 'page' : req.originalUrl} );
+       res.render('search1', { 'title': 'Express', 'allList': resp.data[0].facetedResponse.items,
+                  'category' : category || 'Select' , 'page' : req.originalUrl, 'currentPage' : parseInt(page_number) || 1
+                  , 'count' : resp.data[0].facetedResponse.rawStats.price.count, 'city': city || 'Gurgaon'});
      }
    };
    request.open('GET', requestURL);
